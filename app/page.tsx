@@ -1,101 +1,106 @@
-import Image from "next/image";
+"use client"
+
+import { Card } from "@/components/ui/card"
+import Link from "next/link"
+import { WordFadeIn } from '@/components/ui/word-fade-in';
+import { Send } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useTheme } from "next-themes"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/hooks/use-toast"
+import {
+Select,
+SelectContent,
+SelectItem,
+SelectTrigger,
+SelectValue,
+} from "@/components/ui/select"
+import TypeWriter from "@/components/type-writer"
+import { projects } from "@/lib/projects"
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+const {} = useTheme()
+const { toast } = useToast()
+const latestProjects = projects.slice(-3).reverse()
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+return (
+<div className="relative py-8">
+  <section className="mb-16">
+    <h1 className="text-4xl font-bold mb-4">{`Hi, I'm Max!`}</h1>
+    <p className="text-2xl text-muted-foreground mb-8">
+      <TypeWriter phrases={["Software Engineer", "AI-Artist" , "Web-Developer" ]} />
+    </p>
+  </section>
+
+  <section className="mb-16">
+    <div className="flex items-center justify-between mb-8">
+      <h2 className="text-2xl font-bold">Latest Projects</h2>
+      <Link href="/projects" className="text-sm text-muted-foreground hover:text-primary">
+      View all projects →
+      </Link>
     </div>
-  );
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {latestProjects.map((project) => (
+      <Card key={project.title} className="p-6 hover:bg-accent transition-colors">
+        <Link key={project.id} href={`/projects/${project.id}`}>
+        <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+        <p className="text-muted-foreground">{project.description}</p>
+        </Link>
+      </Card>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <h2 className="text-2xl font-bold mb-8">Get in Touch</h2>
+    <div className="flex flex-col-reverse md:flex-row items-start gap-8">
+      <Card className="p-6 w-full md:w-[500px]">
+        <form>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" type="text" placeholder="Your name" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" placeholder="your@email.com" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="purpose">Purpose</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a purpose" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="work">Work Opportunity</SelectItem>
+                  <SelectItem value="collab">Collaboration</SelectItem>
+                  <SelectItem value="question">Question</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex justify-end">
+              <Button variant="ghost" className="flex justify-end" onClick={() => {
+                  toast({
+                    title: "Thanks for reaching out!",
+                    description: "I will get to you as soon as possible.",
+                  })
+                }}
+              >
+                <Send className="h-4 w-4"></Send>
+              </Button>
+            </div>
+          </div>
+        </form>
+      </Card>
+      <Toaster />
+      <div className="max-w-md animate-fade-in w-full">
+        {/* <p className="text-xl mb-4">Create something amazing together!</p> */}
+        <WordFadeIn words="Create something amazing together" delay={0.25} />
+      </div>
+    </div>
+  </section>
+</div>
+)
 }
